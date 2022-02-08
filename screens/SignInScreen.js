@@ -114,9 +114,9 @@ const SignInScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
+      <StatusBar backgroundColor="#FF4500" barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.text_header}>Welcome!</Text>
+        <Text style={styles.text_header}>Welcome to Food Fusion </Text>
       </View>
       <Animatable.View
         animation="fadeInUpBig"
@@ -206,7 +206,7 @@ const SignInScreen = ({navigation}) => {
         )}
 
         <TouchableOpacity>
-          <Text style={{color: '#009387', marginTop: 15}}>
+          <Text style={{color: '#FF4500', marginTop: 15}}>
             Forgot password?
           </Text>
         </TouchableOpacity>
@@ -217,7 +217,7 @@ const SignInScreen = ({navigation}) => {
               loginHandle(data.username, data.password);
             }}>
             <LinearGradient
-              colors={['#08d4c4', '#01ab9d']}
+              colors={['#FF4500', '#FF4500']}
               style={styles.signIn}>
               <Text
                 style={[
@@ -236,7 +236,7 @@ const SignInScreen = ({navigation}) => {
             style={[
               styles.signIn,
               {
-                borderColor: '#009387',
+                borderColor: '#FF4500',
                 borderWidth: 1,
                 marginTop: 15,
               },
@@ -245,7 +245,7 @@ const SignInScreen = ({navigation}) => {
               style={[
                 styles.textSign,
                 {
-                  color: '#009387',
+                  color: '#222',
                 },
               ]}>
               Sign Up
@@ -262,7 +262,7 @@ export default SignInScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#009387',
+    backgroundColor: '#FF4500',
   },
   header: {
     flex: 1,
@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 30,
+    letterSpacing: 1,
   },
   text_footer: {
     color: '#05375a',
