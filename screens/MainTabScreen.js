@@ -10,7 +10,6 @@ import CartScreen from './CartScreen';
 import TestScreen from './TestScreen';
 
 const HomeStack = createStackNavigator();
-//const DetailsStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 

@@ -14,8 +14,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from 'react-native-paper';
-import {AuthContext} from '../components/context';
-import Users from '../model/users';
 import auth from '@react-native-firebase/auth';
 
 const SignInScreen = ({navigation}) => {
@@ -29,8 +27,6 @@ const SignInScreen = ({navigation}) => {
   });
 
   const {colors} = useTheme();
-
-  const {signIn} = React.useContext(AuthContext);
 
   const textInputChange = val => {
     if (val.trim().length >= 4) {
@@ -94,25 +90,12 @@ const SignInScreen = ({navigation}) => {
         console.log('Responce', res);
       });
 
-    // const foundUser = Users.filter(item => {
-    //   return email == item.email && password == item.password;
-    // });
-
     if (data.email.length == 0 || data.password.length == 0) {
       Alert.alert('Wrong Input!', 'Email or password field cannot be empty.', [
         {text: 'Okay'},
       ]);
       return;
     }
-
-    // if (foundUser.length == 0) {
-    //   Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-    //     {text: 'Okay'},
-    //   ]);
-    //   return;
-    // }
-    // console.log('FOund user', foundUser);
-    //signIn(foundUser);
   };
 
   return (

@@ -16,10 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import {AuthContext} from '../components/context';
 import auth from '@react-native-firebase/auth';
-
-import Users from '../model/users';
 
 const SignInScreen = ({navigation}) => {
   const [data, setData] = React.useState({
@@ -30,8 +27,6 @@ const SignInScreen = ({navigation}) => {
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
-
-  const {signUp} = React.useContext(AuthContext);
 
   const textInputChange = val => {
     if (val.length !== 0) {
@@ -80,8 +75,7 @@ const SignInScreen = ({navigation}) => {
   const registerHandle = (email, password) => {
     console.log('email is :', email);
     console.log('Password is :', password);
-    // const email = 'bilalzafarr39@gmail.com';
-    // const password1 = 'password123456';
+
     try {
       auth()
         .createUserWithEmailAndPassword(email, password)
@@ -92,14 +86,6 @@ const SignInScreen = ({navigation}) => {
       alert(error);
     }
 
-    // const newUser = {
-    //   id: 4,
-    //   email: email,
-
-    //   password: password,
-    //   userToken: 'newuser123',
-    // };
-    // Users.push(newUser);
     if (
       data.email.length == 0 ||
       data.password.length == 0 ||
@@ -117,8 +103,6 @@ const SignInScreen = ({navigation}) => {
       Alert.alert('Pass word must be match!', [{text: 'Okay'}]);
       return;
     }
-    // Users.map(user => console.log(user.email));
-    //signUp(newUser);
   };
 
   return (

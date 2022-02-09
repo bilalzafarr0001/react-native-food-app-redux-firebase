@@ -23,6 +23,7 @@ import categories from '../consts/categories';
 import foods from '../consts/foods';
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 2 - 20;
+import AsyncStorage from '@react-native-community/async-storage';
 
 const HomeScreen = ({navigation}) => {
   const {colors} = useTheme();
@@ -105,16 +106,7 @@ const HomeScreen = ({navigation}) => {
       </TouchableHighlight>
     );
   };
-  // return (
-  // <View style={styles.container}>
-  //   <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
-  //   <Text style={{color: colors.text}}>Home Screenssssss</Text>
-  //   <Button
-  //     title="Go to details screen"
-  //     onPress={() => navigation.navigate('Details')}
-  //   />
-  // </View>
-  // );
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
@@ -164,16 +156,6 @@ const HomeScreen = ({navigation}) => {
     </SafeAreaView>
   );
 };
-
-// export default HomeScreen;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
 
 const style = StyleSheet.create({
   header: {

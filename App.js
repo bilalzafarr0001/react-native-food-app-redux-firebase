@@ -23,12 +23,8 @@ import OnBoardingScreen from './screens/OnBoardingScreen';
 import SplashScreen from './screens/SplashScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
-
-import {AuthContext} from './components/context';
-
-//import RootStackScreen from './screens/RootStackScreen';
-
 import AsyncStorage from '@react-native-community/async-storage';
+
 import {store} from './store';
 import {Provider} from 'react-redux';
 import auth from '@react-native-firebase/auth';
@@ -36,14 +32,6 @@ import auth from '@react-native-firebase/auth';
 const Drawer = createDrawerNavigator();
 
 const RootStack = createStackNavigator();
-
-// const RootStackScreen = ({navigation}) => (
-//   <RootStack.Navigator headerMode="none">
-//     <RootStack.Screen name="SplashScreen" component={SplashScreen} />
-//     <RootStack.Screen name="SignInScreen" component={SignInScreen} />
-//     <RootStack.Screen name="SignUpScreen" component={SignUpScreen} />
-//   </RootStack.Navigator>
-// );
 
 const App = () => {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = React.useState(null);
@@ -67,12 +55,7 @@ const App = () => {
         setAutheticated(false);
       }
     });
-
-    //AsyncStorage.removeItem('isAppFirstLaunched');
   }, []);
-
-  // const [isLoading, setIsLoading] = React.useState(true);
-  // const [userToken, setUserToken] = React.useState(null);
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
@@ -106,105 +89,6 @@ const App = () => {
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case 'RETRIEVE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGIN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-      case 'REGISTER':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-    }
-  };
-
-  const [loginState, dispatch] = React.useReducer(
-    loginReducer,
-    initialLoginState,
-  );
-
-  const authContext = React.useMemo(
-    () => ({
-      signIn: async foundUser => {
-        // setUserToken('fgkj');
-        // setIsLoading(false);
-        const userToken = String(foundUser[0].userToken);
-        const userName = foundUser[0].username;
-
-        try {
-          await AsyncStorage.setItem('userToken', userToken);
-        } catch (e) {
-          console.log(e);
-        }
-        // console.log('user token: ', userToken);
-        dispatch({type: 'LOGIN', id: userName, token: userToken});
-      },
-      signOut: async () => {
-        // setUserToken(null);
-        // setIsLoading(false);
-        try {
-          await AsyncStorage.removeItem('userToken');
-        } catch (e) {
-          console.log(e);
-        }
-        dispatch({type: 'LOGOUT'});
-      },
-      signUp: async newUser => {
-        // setUserToken('fgkj');
-        // setIsLoading(false);
-        const userToken = String(newUser.userToken);
-        const userName = newUser.username;
-
-        try {
-          await AsyncStorage.setItem('userToken', userToken);
-        } catch (e) {
-          console.log(e);
-        }
-        // console.log('user token: ', userToken);
-        dispatch({type: 'REGISTER', id: userName, token: userToken});
-      },
-      toggleTheme: () => {
-        setIsDarkTheme(isDarkTheme => !isDarkTheme);
-      },
-    }),
-    [],
-  );
-
-  useEffect(() => {
-    // setTimeout(async () => {
-    //   // setIsLoading(false);
-    //   let userToken;
-    //   userToken = null;
-    //   try {
-    //     userToken = await AsyncStorage.getItem('userToken');
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    //   // console.log('user token: ', userToken);
-    //   dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
-    // }, 1000);
-  }, []);
-
   // if (loginState.isLoading) {
   //   return (
   //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -215,48 +99,43 @@ const App = () => {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <AuthContext.Provider value={authContext}>
-          {isAppFirstLaunched != null && (
-            <NavigationContainer theme={theme}>
-              {authenticated ? (
-                <Drawer.Navigator
-                  drawerContent={props => <DrawerContent {...props} />}>
-                  <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
-                  <Drawer.Screen
-                    name="SupportScreen"
-                    component={SupportScreen}
+        {isAppFirstLaunched != null && (
+          <NavigationContainer theme={theme}>
+            {authenticated ? (
+              <Drawer.Navigator
+                drawerContent={props => <DrawerContent {...props} />}>
+                <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
+                <Drawer.Screen name="SupportScreen" component={SupportScreen} />
+                <Drawer.Screen
+                  name="SettingsScreen"
+                  component={SettingsScreen}
+                />
+                <Drawer.Screen
+                  name="BookmarkScreen"
+                  component={BookmarkScreen}
+                />
+              </Drawer.Navigator>
+            ) : (
+              <RootStack.Navigator headerMode="none">
+                {isAppFirstLaunched && (
+                  <RootStack.Screen
+                    name="OnboardingScreen"
+                    component={OnBoardingScreen}
                   />
-                  <Drawer.Screen
-                    name="SettingsScreen"
-                    component={SettingsScreen}
-                  />
-                  <Drawer.Screen
-                    name="BookmarkScreen"
-                    component={BookmarkScreen}
-                  />
-                </Drawer.Navigator>
-              ) : (
-                <RootStack.Navigator headerMode="none">
-                  {isAppFirstLaunched && (
-                    <RootStack.Screen
-                      name="OnboardingScreen"
-                      component={OnBoardingScreen}
-                    />
-                  )}
+                )}
 
-                  <RootStack.Screen
-                    name="SignInScreen"
-                    component={SignInScreen}
-                  />
-                  <RootStack.Screen
-                    name="SignUpScreen"
-                    component={SignUpScreen}
-                  />
-                </RootStack.Navigator>
-              )}
-            </NavigationContainer>
-          )}
-        </AuthContext.Provider>
+                <RootStack.Screen
+                  name="SignInScreen"
+                  component={SignInScreen}
+                />
+                <RootStack.Screen
+                  name="SignUpScreen"
+                  component={SignUpScreen}
+                />
+              </RootStack.Navigator>
+            )}
+          </NavigationContainer>
+        )}
       </PaperProvider>
     </Provider>
   );

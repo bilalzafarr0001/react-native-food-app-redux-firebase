@@ -17,12 +17,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {AuthContext} from '../components/context';
-
 export function DrawerContent(props) {
   const paperTheme = useTheme();
-
-  const {signOut, toggleTheme} = React.useContext(AuthContext);
 
   return (
     <View style={{flex: 1}}>
@@ -106,10 +102,7 @@ export function DrawerContent(props) {
             />
           </Drawer.Section>
           <Drawer.Section title="Preferences">
-            <TouchableRipple
-              onPress={() => {
-                toggleTheme();
-              }}>
+            <TouchableRipple>
               <View style={styles.preference}>
                 <Text>Dark Theme</Text>
                 <View pointerEvents="none">
