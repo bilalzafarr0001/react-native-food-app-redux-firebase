@@ -95,31 +95,3 @@ const HomeStackScreen = ({navigation}) => (
     <HomeStack.Screen name="TestScreen" component={TestScreen} />
   </HomeStack.Navigator>
 );
-
-// const DetailsStackScreen = ({navigation}) => (
-//   <DetailsStack.Navigator
-//     screenOptions={{
-//       headerStyle: {
-//         backgroundColor: '#FF4500',
-//       },
-//       headerTintColor: '#fff',
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//       },
-//     }}>
-//     <DetailsStack.Screen
-//       name="Details"
-//       component={DetailsScreen}
-//       options={{
-//         headerLeft: () => (
-//           <Icon.Button
-//             name="ios-menu"
-//             size={25}
-//             backgroundColor="#FF4500"
-//             onPress={() => navigation.openDrawer()}
-//           />
-//         ),
-//       }}
-//     />
-//   </DetailsStack.Navigator>
-// );

@@ -31,6 +31,7 @@ import {AuthContext} from './components/context';
 import AsyncStorage from '@react-native-community/async-storage';
 import {store} from './store';
 import {Provider} from 'react-redux';
+import auth from '@react-native-firebase/auth';
 
 const Drawer = createDrawerNavigator();
 
@@ -46,6 +47,7 @@ const RootStack = createStackNavigator();
 
 const App = () => {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = React.useState(null);
+  const [authenticated, setAutheticated] = React.useState(false);
 
   React.useEffect(async () => {
     const appData = await AsyncStorage.getItem('isAppFirstLaunched');
@@ -55,6 +57,16 @@ const App = () => {
     } else {
       setIsAppFirstLaunched(false);
     }
+    auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log('User autrhnticated is done ************');
+        setAutheticated(true);
+        console.log('USER IS ******', user);
+      } else {
+        console.log('User autrhnticated is not done  ************');
+        setAutheticated(false);
+      }
+    });
 
     //AsyncStorage.removeItem('isAppFirstLaunched');
   }, []);
@@ -157,9 +169,19 @@ const App = () => {
         }
         dispatch({type: 'LOGOUT'});
       },
-      signUp: () => {
+      signUp: async newUser => {
         // setUserToken('fgkj');
         // setIsLoading(false);
+        const userToken = String(newUser.userToken);
+        const userName = newUser.username;
+
+        try {
+          await AsyncStorage.setItem('userToken', userToken);
+        } catch (e) {
+          console.log(e);
+        }
+        // console.log('user token: ', userToken);
+        dispatch({type: 'REGISTER', id: userName, token: userToken});
       },
       toggleTheme: () => {
         setIsDarkTheme(isDarkTheme => !isDarkTheme);
@@ -169,34 +191,34 @@ const App = () => {
   );
 
   useEffect(() => {
-    setTimeout(async () => {
-      // setIsLoading(false);
-      let userToken;
-      userToken = null;
-      try {
-        userToken = await AsyncStorage.getItem('userToken');
-      } catch (e) {
-        console.log(e);
-      }
-      // console.log('user token: ', userToken);
-      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
-    }, 1000);
+    // setTimeout(async () => {
+    //   // setIsLoading(false);
+    //   let userToken;
+    //   userToken = null;
+    //   try {
+    //     userToken = await AsyncStorage.getItem('userToken');
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    //   // console.log('user token: ', userToken);
+    //   dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
+    // }, 1000);
   }, []);
 
-  if (loginState.isLoading) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  // if (loginState.isLoading) {
+  //   return (
+  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
         <AuthContext.Provider value={authContext}>
           {isAppFirstLaunched != null && (
             <NavigationContainer theme={theme}>
-              {loginState.userToken !== null ? (
+              {authenticated ? (
                 <Drawer.Navigator
                   drawerContent={props => <DrawerContent {...props} />}>
                   <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
